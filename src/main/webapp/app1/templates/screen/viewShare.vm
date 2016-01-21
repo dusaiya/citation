@@ -1,0 +1,68 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.List" import="java.util.ArrayList" import="java.lang.Integer"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<form action="">
+		<%-- <%String testSh=(String)session.getAttribute("testSh"); %>
+		<div color="red">Success: <%=testSh %></div> --%>
+		Here are the details about the citations and credit shares.
+		<%String title= (String)session.getAttribute("title");
+		String citationCount=(String)session.getAttribute("citationCount");	
+		%>
+		<div>Title: <%=title %></div>
+		<div>Citation Count: <%=citationCount %>
+		<table border="1">
+			<tr>
+				<td>Id</td>
+				<td>Year</td>
+				<%int authorCount = Integer.parseInt((String)session.getAttribute("authorCount")); 
+				int i = 1;
+				for(; i<=authorCount; i++){
+				%>
+				<td>Author<%=i %></td>
+				<%} %>
+			</tr>
+			<tr> 
+				<%
+				List<ArrayList> shareList = new ArrayList();
+				ArrayList rawList1 = new ArrayList();
+				rawList1.add("1");rawList1.add("1987");rawList1.add("0.3");rawList1.add("0.2");rawList1.add("0.5");
+				shareList.add(rawList1);
+				ArrayList rawList2 = new ArrayList();
+				rawList2.add("2");rawList2.add("1999");rawList2.add("0.4");rawList2.add("0.3");rawList2.add("0.3");
+				shareList.add(rawList2); 
+				//System.out.println(shareList.size());
+				// List<ArrayList> shareList=(List<ArrayList>)session.getAttribute("shareList");
+				List shareItem = null;
+				int j = 0;
+				for(; j<shareList.size(); j++){
+					shareItem=new ArrayList();
+					System.out.println(j);
+					shareItem=shareList.get(j);
+					//System.out.println(shareItem.size());
+				%>
+				<tr>
+					<td><%=shareItem.get(0) %></td>
+					<td><%=shareItem.get(1) %></td>
+					<%int itemCount = 3;
+					// authorCount=(String)session.getAttribute("authorCount"); 
+					int k = 1;
+					for(; k<=itemCount; k++){
+					%>
+					<td><%=shareItem.get(k+1) %></td>
+					<%} %>
+				</tr>
+				<%} %>
+			</tr>
+		</table>
+</form>
+
+</body>
+</html>
