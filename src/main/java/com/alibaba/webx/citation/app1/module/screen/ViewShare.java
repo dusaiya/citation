@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.alibaba.citrus.turbine.Context;
 
 /**
  * 
@@ -20,41 +23,140 @@ import javax.servlet.http.HttpSession;
  */
 public class ViewShare {
 
+    /**执行指令*/
     private static final String BASH_BEDROOM_DUANXUEYE_TAS_CON_NASC_RUN_SH = "bash /usr/local/tomcat/citation/run.sh";
 
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
-        // TODO Auto-generated method stub
+    /**
+     * 
+     * 
+     * @param request
+     * @param context
+     */
+    public void execute(HttpServletRequest request, Context context) {
+        try {
 
-        String titleStr = request.getParameter("title");
-        String titleId = request.getParameter("titleId");
-        String citationCount = "2";
-        String authorCount = "3";
-        List<String[]> shareList = new ArrayList();
-        //System.out.println(titleStr);
-        //返回脚步输出信息
-        /*List<String> outputList = getShOutStr(titleId);
-        System.out.println("test sh method: "+outputList.get(0));*/
-        //StringList 转换成输出数据 Data List
-        /*for(String line : outputList){
-            if(line.startsWith("citation")){
-                citationCount=line.split("/t")[1];
-            }if(line.startsWith("author")){
-                authorCount=line.split("/t")[1];
-            }else{
-                String[] dataLineList =line.split("/t");
-                shareList.add(dataLineList);
-            }
-        }*/
-        HttpSession session = request.getSession();
-        //session.setAttribute("testSh", outputList.get(0));
-        session.setAttribute("title", titleStr);
-        session.setAttribute("citationCount", citationCount);
-        session.setAttribute("authorCount", authorCount);
-        session.setAttribute("shareList", shareList);
-        //response.sendRedirect("viewShare.jsp");
+            String titleStr = request.getParameter("title");
+            String titleId = request.getParameter("titleId");
+            String citationCount = "2";
+            String authorCount = "3";
+            List<String[]> shareList = new ArrayList();
+            //返回脚步输出信息
+            List<String> outputList = getShOutStr(titleId);
+            context.put("outputResult", outputList.get(0));
+            //StringList 转换成输出数据 Data List
+            /**for(String line : outputList){
+                if(line.startsWith("citation")){
+                    citationCount=line.split("/t")[1];
+                }if(line.startsWith("author")){
+                    authorCount=line.split("/t")[1];
+                }else{
+                    String[] dataLineList =line.split("/t");
+                    shareList.add(dataLineList);
+                }
+            }**/
+            /**一下为模拟运行的数据**/
+            List<String> strList = new ArrayList<String>();
+            strList.add("Citations   6");
+            strList.add("Author\t4");
+            strList.add("Name\tDASH, UN\tDAS, BB\tBISWAL, UK\tPANDA, T");
+            strList.add("4\t1987\t0.509551\t0.163483\t0.163483\t0.163483");
+            strList.add("6\t1996\t0.482749\t0.172417\t0.172417\t0.172417");
+            strList.add("6\t2002\t0.507319\t0.164227\t0.164227\t0.164227");
+            strList.add("total       0.507319    0.164227    0.164227    0.164227");
+            dataMsg(context, strList);
+
+        } catch (Exception e) {
+            context.put("message", e.getMessage());
+        }
     }
 
-    private List<String> getShOutStr(String titleId) {
+    /**
+     * 
+     * @param context
+     * @param strList
+     * @throws NumberFormatException
+     */
+    private void dataMsg(Context context, List<String> strList) throws NumberFormatException {
+        int authorCnt = 0;
+        List<String> nameList = new ArrayList<String>();
+        List<JSONArray> yearDataList = new ArrayList<JSONArray>();
+        for (String str : strList) {
+            if (str.startsWith("Citations")) {
+                continue;
+            } else if (str.startsWith("Author")) {
+                String[] countStr = str.split("\t");
+                //authorCnt = Integer.parseInt(countStr);
+                continue;
+            } else if (str.startsWith("Name") || str.startsWith("total")) {
+                continue;
+            } else {
+                //yearDataList.add(str);
+                String[] yearData = str.split("\t");
+
+                List<JSONObject> linedata = new ArrayList<JSONObject>();
+                for (String data : yearData) {
+                    JSONObject ob = new JSONObject();
+                    ob.put("a", data);
+                    linedata.add(ob);
+                }
+                JSONArray dataList = new JSONArray(linedata);
+                yearDataList.add(dataList);
+            }
+        }
+        JSONArray dataList = new JSONArray(yearDataList);
+        context.put("dataList", dataList);
+        /**
+        int authorCnt = 0;
+        List<String> nameList = new ArrayList<String>();
+        List<String> yearDataList = new ArrayList<String>();
+        for (String str : strList) {
+            if (str.startsWith("Citations")) {
+                context.put("citation", str.split("\t")[1]);
+                continue;
+            } else if (str.startsWith("Author")) {
+                String countStr = str.split("\t")[1];
+                context.put("authorCount", countStr);
+                authorCnt = Integer.parseInt(countStr);
+                continue;
+            } else if (str.startsWith("Name")) {
+                String[] nameStrList = str.split("\t");
+                for (String name : nameStrList) {
+                    if ("Name".equals(name)) {
+                        continue;
+                    }
+                    nameList.add(name);
+                }
+                context.put("nameList", nameList);
+                continue;
+            } else if (str.startsWith("total")) {
+                List<String> totalList = new ArrayList<String>(authorCnt);
+                String[] totalStrList = str.split("\t");
+                for (String total : totalStrList) {
+                    if ("total".equals(total)) {
+                        continue;
+                    }
+                    totalList.add(total);
+                }
+                context.put("totalList", totalList);
+                continue;
+            } else if (authorCnt == 0) {
+                continue;
+            } else {
+                yearDataList.add(str);
+            }
+           
+        }
+        **/
+    }
+
+    /**
+     * 获取运行代码数据
+     * 
+     * @param titleId
+     * @return
+     * @throws Exception 
+     */
+    private List<String> getShOutStr(String titleId) throws Exception {
         List<String> outputList = new ArrayList<String>();
         try {
             Process process = null;
@@ -70,7 +172,7 @@ public class ViewShare {
             input.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return outputList;
     }

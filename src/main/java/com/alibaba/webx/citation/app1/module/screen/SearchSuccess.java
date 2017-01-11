@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.alibaba.citrus.turbine.Context;
 
@@ -28,14 +26,11 @@ public class SearchSuccess {
      * 
      * 
      * @param request
-     * @param response
      * @param context
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void execute(HttpServletRequest request, HttpServletResponse response, Context context) {
+    public void execute(HttpServletRequest request,  Context context) {
         String titleStr = request.getParameter("title");
 
-        //search DB
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception e) {
@@ -54,13 +49,13 @@ public class SearchSuccess {
             //System.out.println(sql);
             rs = stmt.executeQuery(sql);
         } catch (Exception e) {
-            e.printStackTrace();
+            context.put("message", e.getMessage());
+            return;
         }
 
         //return results
-        HttpSession session = request.getSession();
         try {
-            List rsList = new ArrayList();
+            List<Paper> rsList = new ArrayList<Paper>();
             rs.next();
             int rowIndex = rs.getRow();
             //System.out.println(rowIndex);
@@ -68,24 +63,112 @@ public class SearchSuccess {
                 rs.previous();
                 //System.out.println(rs.getRow());
                 while (rs.next()) {
-                    List<String> rowList = new ArrayList<String>();
-                    rowList.add(rs.getString("title").toUpperCase());
-                    rowList.add(rs.getString("year").toUpperCase());
-                    rowList.add(rs.getString("journal").toUpperCase());
-                    rowList.add(rs.getString("wos_id").toUpperCase());
-                    rsList.add(rowList);
+                    Paper paper = new Paper();
+                    paper.setTitle(rs.getString("title").toUpperCase());
+                    paper.setYear(rs.getString("year").toUpperCase());
+                    paper.setJournal(rs.getString("journal").toUpperCase());
+                    paper.setWosId(rs.getString("wos_id").toUpperCase());
+                    rsList.add(paper);
                 }
-                //System.out.println(rsList.size());
-                session.setAttribute("resultSet", rsList);
-                //response.sendRedirect("searchSuccess.jsp");
+                context.put("resultSet", rsList);
+                context.put("message", null);
                 return;
             } else {
-                session.setAttribute("message", "No match for input!");
-                //response.sendRedirect("searchFailure.jsp");
+                context.put("message", "No match for input!");
                 return;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            context.put("message", e.getMessage());
         }
+    }
+
+    /**
+     * 
+     * 
+     * @author xueye.duanxy
+     * @version $Id: SearchSuccess.java, v 0.1 2016-1-21 下午7:53:32  Exp $
+     */
+    public class Paper {
+        /**名称*/
+        private String title;
+        /**年份*/
+        private String year;
+        /**刊物**/
+        private String journal;
+        /**存储Id*/
+        private String wosId;
+
+        /**
+         * Getter method for property <tt>title</tt>.
+         * 
+         * @return property value of title
+         */
+        public String getTitle() {
+            return title;
+        }
+
+        /**
+         * Getter method for property <tt>year</tt>.
+         * 
+         * @return property value of year
+         */
+        public String getYear() {
+            return year;
+        }
+
+        /**
+         * Getter method for property <tt>journal</tt>.
+         * 
+         * @return property value of journal
+         */
+        public String getJournal() {
+            return journal;
+        }
+
+        /**
+         * Getter method for property <tt>wosId</tt>.
+         * 
+         * @return property value of wosId
+         */
+        public String getWosId() {
+            return wosId;
+        }
+
+        /**
+         * Setter method for property <tt>title</tt>.
+         * 
+         * @param title value to be assigned to property title
+         */
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        /**
+         * Setter method for property <tt>year</tt>.
+         * 
+         * @param year value to be assigned to property year
+         */
+        public void setYear(String year) {
+            this.year = year;
+        }
+
+        /**
+         * Setter method for property <tt>journal</tt>.
+         * 
+         * @param journal value to be assigned to property journal
+         */
+        public void setJournal(String journal) {
+            this.journal = journal;
+        }
+
+        /**
+         * Setter method for property <tt>wosId</tt>.
+         * 
+         * @param wosId value to be assigned to property wosId
+         */
+        public void setWosId(String wosId) {
+            this.wosId = wosId;
+        }
+
     }
 }

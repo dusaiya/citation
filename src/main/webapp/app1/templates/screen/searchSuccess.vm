@@ -1,38 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.List" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Title Search Result</title>
-</head>
-<body>
-<form action='viewShareServlet' method="post">		
+<div>
 	<table border="1">
-		<tr>
-			<td>Title</td>
-			<td>Year</td>
-			<td>Journal</td>
-			<td>Operation</td>
-		</tr>
-		<tr>
-			<%
-			List<List> papersList=(List<List>)session.getAttribute("resultSet");
-			int i=0;
-			for(; i<papersList.size();i++){%>
-			<tr>
-				<td ><%= papersList.get(i).get(0) %></td>
-				<input type="hidden" name="titleId" value="<%= papersList.get(i).get(3) %>"/>
-				<input type="hidden" name="title" value="<%= papersList.get(i).get(0) %>"/>
-				<td><%= papersList.get(i).get(1) %></td>
-				<td><%= papersList.get(i).get(2) %></td>
-				<td><input type="submit" value="View Share"/></td>
-			</tr>
-			<%
-			}%>
-		</tr>
+		
+		
+			#if($!message)
+				<font color="red">No result: $!message</font> 
+			#else
+        		<tr>
+        			<th>Title</th>
+        			<th>Year</th>
+        			<th>Journal</th>
+        			<th>Operation</th>
+        		</tr>
+    			#foreach($!result in $!resultSet)
+				<tr>
+    				<td >$!result.title</td>
+    				<td>$!result.year</td>
+    				<td>$!result.journal</td>
+                    <td><button onclick="viewShare('$!result.wosId','$!result.title')"  name="ViewShare">View Share</button></td>
+				</tr>
+				#end
+			#end
 	</table>
-</form>
-</body>
-</html>
+</div>
+<script type="text/javascript">
+ function viewShare(titleId,title){
+  	alert(titleId + title);
+	window.location.href="viewShare.htm?titleId=" + titleId + "&title=" + title;
+  };
+</script>

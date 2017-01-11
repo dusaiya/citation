@@ -1,15 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-#showHead ("My Simple Webx Application")
+    <meta charset="utf-8">
+	<title>Title Search Page</title>
+	<link href="dpl.css" rel="stylesheet">
+	<link href="bui.css" rel="stylesheet">
 </head>
+<style>
+	 #lefttable{
+	 BORDER-RIGHT:#DDDDDD  1px solid;
+	 BORDER-BOTTOM:#DDDDDD  1px solid;
+	}
+	#righttable{
+	 BORDER-LEFT:#DDDDDD  1px solid;
+	 BORDER-BOTTOM:#DDDDDD  1px solid;
+	}
+	.float-left {
+        float: left;
+      }
+      
+      .float-right {
+        float: right;
+        }
+      
+      
+      
+      .clearfix:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+      }
+      
+</style>
+<body>
 
-<body #bodyAttributes ()>
-
+ 
+<script src="jquery-1.12.0.min.js"></script>
+  <div class="demo-content" style="border-width:20px; border-style:solid; border-color:white;">
 $screen_placeholder
-
-<hr/>
-<p>[<a href="$app1Link.setTarget("index")">Home</a>] [<a href="$app1Link">Dev Home</a>]</p>
-
+  </div>
 </body>
 </html>

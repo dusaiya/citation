@@ -1,35 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Title Search Page</title>
-</head>
-
-<script type="text/javascript">
-		function validateSearch(){
-			var titleTxt=document.titleSearch.title.value
-			if (titleTxt==""){
-				alert("Title Cannot Be Empty!")
-				return false
-			}
-		}
-</script>
-	
-<body>
-	Please input the title keyword
-	<form method="post" name="titleSearch" action='searchTitleServlet'>
+<div>
+<b>	Please input the title keyword</b>
 		<table border="1">
 			<tr>
 				<td>title:</td>
-				<td>
-					<input type="text" name="title" value=""> 
-				</td>
+				<td> <input id="title" type="text" name="title" value=""/>  </td>
 			</tr>
 		</table>
-	</form>
-	
+	<button class="button button-primary" onclick="checkAcc()"  name="SEARCH">SEARCH</button>
+</div>	
 
-</body>
-</html>
+<script type="text/javascript">
+ function checkAcc(){
+  	var title = $("#title").val();
+	if(title==""){
+		alert("Title Cannot Be Empty!")
+		return false
+	}
+	window.location.href="searchSuccess.htm?title=" + title;
+  };
+</script>
+

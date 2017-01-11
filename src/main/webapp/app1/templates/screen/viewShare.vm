@@ -1,68 +1,103 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.List" import="java.util.ArrayList" import="java.lang.Integer"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-	
-	<form action="">
-		<%-- <%String testSh=(String)session.getAttribute("testSh"); %>
-		<div color="red">Success: <%=testSh %></div> --%>
-		Here are the details about the citations and credit shares.
-		<%String title= (String)session.getAttribute("title");
-		String citationCount=(String)session.getAttribute("citationCount");	
-		%>
-		<div>Title: <%=title %></div>
-		<div>Citation Count: <%=citationCount %>
-		<table border="1">
-			<tr>
-				<td>Id</td>
-				<td>Year</td>
-				<%int authorCount = Integer.parseInt((String)session.getAttribute("authorCount")); 
-				int i = 1;
-				for(; i<=authorCount; i++){
-				%>
-				<td>Author<%=i %></td>
-				<%} %>
-			</tr>
-			<tr> 
-				<%
-				List<ArrayList> shareList = new ArrayList();
-				ArrayList rawList1 = new ArrayList();
-				rawList1.add("1");rawList1.add("1987");rawList1.add("0.3");rawList1.add("0.2");rawList1.add("0.5");
-				shareList.add(rawList1);
-				ArrayList rawList2 = new ArrayList();
-				rawList2.add("2");rawList2.add("1999");rawList2.add("0.4");rawList2.add("0.3");rawList2.add("0.3");
-				shareList.add(rawList2); 
-				//System.out.println(shareList.size());
-				// List<ArrayList> shareList=(List<ArrayList>)session.getAttribute("shareList");
-				List shareItem = null;
-				int j = 0;
-				for(; j<shareList.size(); j++){
-					shareItem=new ArrayList();
-					System.out.println(j);
-					shareItem=shareList.get(j);
-					//System.out.println(shareItem.size());
-				%>
-				<tr>
-					<td><%=shareItem.get(0) %></td>
-					<td><%=shareItem.get(1) %></td>
-					<%int itemCount = 3;
-					// authorCount=(String)session.getAttribute("authorCount"); 
-					int k = 1;
-					for(; k<=itemCount; k++){
-					%>
-					<td><%=shareItem.get(k+1) %></td>
-					<%} %>
-				</tr>
-				<%} %>
-			</tr>
-		</table>
-</form>
+##<script src="http://g.tbcdn.cn/bui/acharts/1.0.32/acharts-min.js"></script>
+<script src="acharts-min.js"></script>
+<input id="dataList" type="hidden" value="[[{&quot;a&quot;:&quot;4&quot;},{&quot;a&quot;:&quot;1985&quot;},{&quot;a&quot;:&quot;0.0521739&quot;},{&quot;a&quot;:&quot;0.0521739&quot;},{&quot;a&quot;:&quot;0.073913&quot;},{&quot;a&quot;:&quot;0.0521739&quot;},{&quot;a&quot;:&quot;0.769565&quot;}],[{&quot;a&quot;:&quot;26&quot;},{&quot;a&quot;:&quot;1986&quot;},{&quot;a&quot;:&quot;0.079803&quot;},{&quot;a&quot;:&quot;0.0599063&quot;},{&quot;a&quot;:&quot;0.127881&quot;},{&quot;a&quot;:&quot;0.0723418&quot;},{&quot;a&quot;:&quot;0.660068&quot;}],[{&quot;a&quot;:&quot;44&quot;},{&quot;a&quot;:&quot;1987&quot;},{&quot;a&quot;:&quot;0.112892&quot;},{&quot;a&quot;:&quot;0.0739135&quot;},{&quot;a&quot;:&quot;0.142464&quot;},{&quot;a&quot;:&quot;0.0991233&quot;},{&quot;a&quot;:&quot;0.571608&quot;}],[{&quot;a&quot;:&quot;72&quot;},{&quot;a&quot;:&quot;1988&quot;},{&quot;a&quot;:&quot;0.121778&quot;},{&quot;a&quot;:&quot;0.0749946&quot;},{&quot;a&quot;:&quot;0.143556&quot;},{&quot;a&quot;:&quot;0.109646&quot;},{&quot;a&quot;:&quot;0.550025&quot;}],[{&quot;a&quot;:&quot;97&quot;},{&quot;a&quot;:&quot;1989&quot;},{&quot;a&quot;:&quot;0.137868&quot;},{&quot;a&quot;:&quot;0.0815681&quot;},{&quot;a&quot;:&quot;0.144731&quot;},{&quot;a&quot;:&quot;0.119962&quot;},{&quot;a&quot;:&quot;0.515871&quot;}],[{&quot;a&quot;:&quot;113&quot;},{&quot;a&quot;:&quot;1990&quot;},{&quot;a&quot;:&quot;0.149529&quot;},{&quot;a&quot;:&quot;0.0836749&quot;},{&quot;a&quot;:&quot;0.144163&quot;},{&quot;a&quot;:&quot;0.124258&quot;},{&quot;a&quot;:&quot;0.498375&quot;}],[{&quot;a&quot;:&quot;130&quot;},{&quot;a&quot;:&quot;1991&quot;},{&quot;a&quot;:&quot;0.180421&quot;},{&quot;a&quot;:&quot;0.0846302&quot;},{&quot;a&quot;:&quot;0.141131&quot;},{&quot;a&quot;:&quot;0.130156&quot;},{&quot;a&quot;:&quot;0.463661&quot;}],[{&quot;a&quot;:&quot;151&quot;},{&quot;a&quot;:&quot;1992&quot;},{&quot;a&quot;:&quot; 0.19316&quot;},{&quot;a&quot;:&quot;0.0843277&quot;},{&quot;a&quot;:&quot;0.140258&quot;},{&quot;a&quot;:&quot; 0.13543&quot;},{&quot;a&quot;:&quot;0.446825&quot;}],[{&quot;a&quot;:&quot;160&quot;},{&quot;a&quot;:&quot;1993&quot;},{&quot;a&quot;:&quot;0.196359&quot;},{&quot;a&quot;:&quot;0.0859172&quot;},{&quot;a&quot;:&quot;0.140954&quot;},{&quot;a&quot;:&quot;0.137811&quot;},{&quot;a&quot;:&quot;0.438958&quot;}],[{&quot;a&quot;:&quot;169&quot;},{&quot;a&quot;:&quot;1994&quot;},{&quot;a&quot;:&quot;0.221079&quot;},{&quot;a&quot;:&quot;0.0855906&quot;},{&quot;a&quot;:&quot;0.136016&quot;},{&quot;a&quot;:&quot;0.137113&quot;},{&quot;a&quot;:&quot;0.420201&quot;}],[{&quot;a&quot;:&quot;183&quot;},{&quot;a&quot;:&quot;1995&quot;},{&quot;a&quot;:&quot;0.236178&quot;},{&quot;a&quot;:&quot;0.0854935&quot;},{&quot;a&quot;:&quot; 0.13504&quot;},{&quot;a&quot;:&quot;0.136663&quot;},{&quot;a&quot;:&quot;0.406625&quot;}],[{&quot;a&quot;:&quot;196&quot;},{&quot;a&quot;:&quot;1996&quot;},{&quot;a&quot;:&quot;0.243243&quot;},{&quot;a&quot;:&quot;0.0869902&quot;},{&quot;a&quot;:&quot;0.134356&quot;},{&quot;a&quot;:&quot;0.138335&quot;},{&quot;a&quot;:&quot;0.397076&quot;}],[{&quot;a&quot;:&quot;208&quot;},{&quot;a&quot;:&quot;1997&quot;},{&quot;a&quot;:&quot;0.249752&quot;},{&quot;a&quot;:&quot;0.0839304&quot;},{&quot;a&quot;:&quot;0.130266&quot;},{&quot;a&quot;:&quot;0.133497&quot;},{&quot;a&quot;:&quot;0.402555&quot;}],[{&quot;a&quot;:&quot;224&quot;},{&quot;a&quot;:&quot;1998&quot;},{&quot;a&quot;:&quot;0.267457&quot;},{&quot;a&quot;:&quot;0.083601&quot;},{&quot;a&quot;:&quot;0.126513&quot;},{&quot;a&quot;:&quot;0.132291&quot;},{&quot;a&quot;:&quot;0.390137&quot;}],[{&quot;a&quot;:&quot;235&quot;},{&quot;a&quot;:&quot;1999&quot;},{&quot;a&quot;:&quot;0.279785&quot;},{&quot;a&quot;:&quot;0.0806474&quot;},{&quot;a&quot;:&quot; 0.12285&quot;},{&quot;a&quot;:&quot;0.130165&quot;},{&quot;a&quot;:&quot;0.386553&quot;}],[{&quot;a&quot;:&quot;242&quot;},{&quot;a&quot;:&quot;2000&quot;},{&quot;a&quot;:&quot;0.279151&quot;},{&quot;a&quot;:&quot;0.0780379&quot;},{&quot;a&quot;:&quot;0.120944&quot;},{&quot;a&quot;:&quot;0.128151&quot;},{&quot;a&quot;:&quot;0.393716&quot;}],[{&quot;a&quot;:&quot;251&quot;},{&quot;a&quot;:&quot;2001&quot;},{&quot;a&quot;:&quot;0.277358&quot;},{&quot;a&quot;:&quot;0.0779605&quot;},{&quot;a&quot;:&quot;0.120841&quot;},{&quot;a&quot;:&quot;0.128295&quot;},{&quot;a&quot;:&quot;0.395546&quot;}],[{&quot;a&quot;:&quot;260&quot;},{&quot;a&quot;:&quot;2002&quot;},{&quot;a&quot;:&quot;0.279187&quot;},{&quot;a&quot;:&quot;0.0784515&quot;},{&quot;a&quot;:&quot; 0.12229&quot;},{&quot;a&quot;:&quot;0.129896&quot;},{&quot;a&quot;:&quot;0.390175&quot;}],[{&quot;a&quot;:&quot;268&quot;},{&quot;a&quot;:&quot;2003&quot;},{&quot;a&quot;:&quot;0.280958&quot;},{&quot;a&quot;:&quot;0.0789357&quot;},{&quot;a&quot;:&quot;0.122174&quot;},{&quot;a&quot;:&quot;0.130304&quot;},{&quot;a&quot;:&quot;0.387628&quot;}],[{&quot;a&quot;:&quot;280&quot;},{&quot;a&quot;:&quot;2004&quot;},{&quot;a&quot;:&quot; 0.27993&quot;},{&quot;a&quot;:&quot;0.0799071&quot;},{&quot;a&quot;:&quot;0.122635&quot;},{&quot;a&quot;:&quot;0.130741&quot;},{&quot;a&quot;:&quot;0.386786&quot;}],[{&quot;a&quot;:&quot;287&quot;},{&quot;a&quot;:&quot;2005&quot;},{&quot;a&quot;:&quot;0.280354&quot;},{&quot;a&quot;:&quot;0.0812927&quot;},{&quot;a&quot;:&quot;0.122847&quot;},{&quot;a&quot;:&quot; 0.13186&quot;},{&quot;a&quot;:&quot;0.383646&quot;}],[{&quot;a&quot;:&quot;296&quot;},{&quot;a&quot;:&quot;2006&quot;},{&quot;a&quot;:&quot;0.277358&quot;},{&quot;a&quot;:&quot;0.0809837&quot;},{&quot;a&quot;:&quot;0.123393&quot;},{&quot;a&quot;:&quot;0.131945&quot;},{&quot;a&quot;:&quot;0.386321&quot;}],[{&quot;a&quot;:&quot;301&quot;},{&quot;a&quot;:&quot;2007&quot;},{&quot;a&quot;:&quot;0.276704&quot;},{&quot;a&quot;:&quot;0.0813737&quot;},{&quot;a&quot;:&quot;0.123657&quot;},{&quot;a&quot;:&quot;0.132122&quot;},{&quot;a&quot;:&quot;0.386144&quot;}],[{&quot;a&quot;:&quot;313&quot;},{&quot;a&quot;:&quot;2008&quot;},{&quot;a&quot;:&quot;0.277413&quot;},{&quot;a&quot;:&quot;0.081719&quot;},{&quot;a&quot;:&quot;0.124322&quot;},{&quot;a&quot;:&quot;0.133214&quot;},{&quot;a&quot;:&quot;0.383333&quot;}],[{&quot;a&quot;:&quot;326&quot;},{&quot;a&quot;:&quot;2009&quot;},{&quot;a&quot;:&quot;0.274705&quot;},{&quot;a&quot;:&quot;0.0812673&quot;},{&quot;a&quot;:&quot;0.124585&quot;},{&quot;a&quot;:&quot;0.132491&quot;},{&quot;a&quot;:&quot;0.386952&quot;}],[{&quot;a&quot;:&quot;335&quot;},{&quot;a&quot;:&quot;2010&quot;},{&quot;a&quot;:&quot;0.273961&quot;},{&quot;a&quot;:&quot;0.0821425&quot;},{&quot;a&quot;:&quot;0.124719&quot;},{&quot;a&quot;:&quot; 0.13271&quot;},{&quot;a&quot;:&quot;0.386468&quot;}],[{&quot;a&quot;:&quot;350&quot;},{&quot;a&quot;:&quot;2011&quot;},{&quot;a&quot;:&quot;0.275566&quot;},{&quot;a&quot;:&quot;0.0826656&quot;},{&quot;a&quot;:&quot;0.124912&quot;},{&quot;a&quot;:&quot;0.133655&quot;},{&quot;a&quot;:&quot;0.383201&quot;}],[{&quot;a&quot;:&quot;360&quot;},{&quot;a&quot;:&quot;2012&quot;},{&quot;a&quot;:&quot; 0.27435&quot;},{&quot;a&quot;:&quot;0.0835337&quot;},{&quot;a&quot;:&quot; 0.12531&quot;},{&quot;a&quot;:&quot;0.134373&quot;},{&quot;a&quot;:&quot;0.382433&quot;}]]" />
 
-</body>
-</html>
+<div id="canvas" class="float-left">
+</div>	
+<script type="text/javascript">
+function dataConvert(dataArray,id,nameCount){
+var newDataArray = new Array(dataArray.length);
+for(var i=0; i< dataArray.length;i++){
+	newDataArray[i] =new Array(5);
+	newDataArray[i][0] =dataArray[i][0];
+	newDataArray[i][1] =dataArray[i][id];
+}
+return newDataArray;
+};
+  function drawCanvas(dataArray, canvasId,canvasTitle,length){
+        var chart = new AChart({
+          theme : AChart.Theme.Smooth2,
+          id : canvasId,
+          width : 800,
+          height : 500,
+          plotCfg : {
+            margin : [50,50,80] //»­°åµÄ±ß¾à
+          },
+                  xAxis:{
+                                title: {
+                    text: 'Year'
+                                }
+                  },
+                   yAxis: {        //yÖáÌí¼Ótitle
+                title: {
+                    text: canvasTitle
+                                },
+                                ticks : [0,0.2,0.4, 0.6 ,0.8, 1.0]
+                 },
+          seriesOptions : {
+              lineCfg : { //²»Í¬ÀàÐÍµÄÍ¼¶ÔÓ¦²»Í¬µÄ¹²ÓÃÊôÐÔ£¬lineCfg,areaCfg,columnCfgµÈ£¬type + Cfg ±êÊ¾
+              markers : {
+                  marker : {
+                    'stroke-width' : 0.3,
+                    'fill-opacity' : .2
+                  },
+                  actived : {
+                      radius : 8        ,
+                      stroke: '#fff'
+                  }
+				}
+            }
+          },
+          tooltip : {
+            shared : true, //ÊÇ·ñ¶à¸öÊý¾ÝÐòÁÐ¹²Í¬ÏÔÊ¾ÐÅÏ¢
+            crosshairs : true //ÊÇ·ñ³öÏÖ»ù×¼Ïß
+            /**/
+          },
+          series: [ {
+                  	name: '1' ,
+                  	data: dataConvert(dataArray,1,dataArray.length)
+              		},
+					{
+                  	name: '2' ,
+                  	data: dataConvert(dataArray,2,dataArray.length)
+              		},
+					{
+                  	name: '3' ,
+                  	data: dataConvert(dataArray,3,dataArray.length)
+              		},
+					{
+                  	name: '4' ,
+                  	data: dataConvert(dataArray,4,dataArray.length)
+              		},
+					{
+                  	name: '5' ,
+                  	data: dataConvert(dataArray,5,dataArray.length)
+              		}
+					
+					
+          ]
+        });
+
+        chart.render();
+  };
+  </script>
+<script type="text/javascript">
+                var dataList=$("#dataList").val();
+                //alert(dataList);
+                var mid =eval(dataList);
+
+                var accDataArray = new Array(mid.length);
+                var i =0;
+                var str="";
+                for(i=0;i<mid.length;i++){
+                        accDataArray[i] =new Array(6);
+                        accDataArray[i][0]=parseInt(mid[i][1].a);
+                        accDataArray[i][1]=mid[i][2].a;
+                        accDataArray[i][2]=mid[i][3].a;
+						accDataArray[i][3]=mid[i][4].a;
+						accDataArray[i][4]=mid[i][5].a;
+						accDataArray[i][5]=mid[i][6].a;
+						
+                }
+                drawCanvas(accDataArray,"canvas","",mid.length);
+</script>
